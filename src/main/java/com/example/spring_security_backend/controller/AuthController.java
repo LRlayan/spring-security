@@ -21,7 +21,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<JWTAuthResponse> registerUser(@RequestBody UserDTO userDTO) {
         UserDTO user = new UserDTO();
-        user.setUsername(user.getUsername());
+        user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
         user.setRole(userDTO.getRole());
         user.setPassword(userDTO.getPassword());
