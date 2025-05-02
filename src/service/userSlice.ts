@@ -32,8 +32,8 @@ export const registerUser = createAsyncThunk(
             const payload = {
                 username: user.username,
                 email: user.email,
+                password: user.password,
                 role: user.role,
-                password: user.password
             };
 
             const response = await api.post("auth/register", payload, {withCredentials: true});
