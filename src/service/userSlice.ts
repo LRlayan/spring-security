@@ -37,6 +37,19 @@ export const registerUser = createAsyncThunk(
     }
 );
 
+export const loginUser = createAsyncThunk(
+    "login/loginUser",
+    async (user: UserModel) => {
+        // eslint-disable-next-line no-useless-catch
+        try {
+            const response = await api.post("auth/login", user, {withCredentials: true});
+            return response.data;
+        } catch (e) {
+            throw e;
+        }
+    }
+)
+
 const userSlice = createSlice({
     name: "user",
     initialState,
@@ -53,7 +66,21 @@ const userSlice = createSlice({
                 state.loading = true;
             })
             .addCase(registerUser.rejected, (state) => {
+                state.isAuthenticated = false;
                 state.error = "Not Register with our system now. Please Try Again later!";
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                if (action.payload) {
+                    state.user = action.payload;
+                    state.isAuthenticated = true;
+                }
+            })
+            .addCase(loginUser.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(loginUser.rejected, (state) => {
+                state.isAuthenticated = false;
+                state.error = "Can,t login to the system. Please Try Again later!";
             })
     }
 });
