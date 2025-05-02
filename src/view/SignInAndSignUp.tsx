@@ -21,7 +21,7 @@ const SignInAndSignUp = () => {
     const [role, setRole] = useState<string>("");
     const dispatch = useDispatch<AppDispatch>();
 
-    const roles = ['Admin', 'User', 'Manager'];
+    const roles = ['ADMIN', 'USER', 'MANAGER'];
 
     const handleSignIn = () => {
         setSignIn(true);
@@ -29,7 +29,7 @@ const SignInAndSignUp = () => {
 
     const handleSignUp = () => {
         setSignIn(false);
-        const user = new UserModel(username, email, password, role);
+        const user = new UserModel(username, email, role, password);
         dispatch(registerUser(user));
     }
 
