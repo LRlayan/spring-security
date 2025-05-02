@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(userDTO.getPassword())
                 .build();
         User save = userRepository.save(mapping.toUserEntity(user));
-        String generateToken = jwtUtils.generateToken((UserDetails) save);
+        String generateToken = jwtUtils.generateToken(save);
         return JWTAuthResponse.builder().token(generateToken).build();
     }
 
