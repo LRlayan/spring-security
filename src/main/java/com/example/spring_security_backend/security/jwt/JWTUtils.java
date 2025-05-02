@@ -23,6 +23,9 @@ public class JWTUtils {
     @Value("${spring.jwtKey}")
     private String jwtSignInKey;
 
+    @Value("${spring.security.jwt.jwtExpirationMs}")
+    private long jwtExpirationMs;
+
     public String extractUsername(String jwtToken) {
         return extractClaims(jwtToken, Claims::getSubject);
     }
@@ -61,7 +64,7 @@ public class JWTUtils {
     private String generateToken(Map<String, Objects> extraClaims, UserDetails userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 3000000))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256).compact();
     }
 }
