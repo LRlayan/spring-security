@@ -29,8 +29,12 @@ const SignInAndSignUp = () => {
 
     const handleSignUp = () => {
         setSignIn(false);
-        const user = new UserModel(username, email, role, password);
-        dispatch(registerUser(user));
+        const user = new UserModel(username, email, password, role);
+        if (password !== "" && username !== "" && email !== "" && role !== "") {
+            dispatch(registerUser(user));
+        }else {
+            console.log("Please Fill the form");
+        }
     }
 
     return(
