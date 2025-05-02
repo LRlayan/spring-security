@@ -1,6 +1,7 @@
 import {UserModel} from "../model/userModel.ts";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {api} from "../api/api.ts";
+import Cookies from 'js-cookie';
 
 const initialState: { user: UserModel | null, jwtToken: null, refreshToken: null, username: null, isAuthenticated: boolean, loading: boolean, error: string } = {
     user: null,
@@ -71,7 +72,15 @@ const userSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 if (action.payload) {
-                    state.user = action.payload;
+                    state.jwtToken = action.payload.jwtToken;
+                    state.refreshToken = action.payload.refreshToken;
+                    state.user = action.payload.user;
+                    state.username = action.payload.username;
+
+                    Cookies.set("jwtToken", action.payload.jwtToken, {
+                        expires: 7, //valid for 7 days
+                        sameSite: "lax"
+                    });
                     state.isAuthenticated = true;
                 }
             })
