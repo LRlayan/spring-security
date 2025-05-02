@@ -5,4 +5,6 @@ import com.example.spring_security_backend.security.jwt.JWTAuthResponse;
 
 public interface AuthService {
     JWTAuthResponse registerUser(UserDTO userDTO);
+
+    JWTAuthResponse signInUser(UserDTO userDTO);
 }
