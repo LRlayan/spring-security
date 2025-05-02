@@ -7,17 +7,21 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Typography from "@mui/material/Typography";
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import { Button } from '@mui/material';
 import {registerUser} from "../service/userSlice.ts";
 import {UserModel} from "../model/userModel.ts";
-
+import MenuItem from '@mui/material/MenuItem';
 
 const SignInAndSignUp = () => {
     const [isSignIn, setSignIn] = useState<boolean>(true);
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [role, setRole] = useState<string>("");
     const dispatch = useDispatch<AppDispatch>();
+
+    const roles = ['Admin', 'User', 'Manager'];
 
     const handleSignIn = () => {
         setSignIn(true);
@@ -25,8 +29,7 @@ const SignInAndSignUp = () => {
 
     const handleSignUp = () => {
         setSignIn(false);
-        const user = new UserModel(username, email, password);
-        console.log(user)
+        const user = new UserModel(username, email, password, role);
         dispatch(registerUser(user));
     }
 
@@ -66,18 +69,38 @@ const SignInAndSignUp = () => {
                     </Box>
 
                     {!isSignIn &&
-                        <Box sx={{
-                            display: 'flex',
-                            alignItems: 'flex-end',
-                        }}>
-                            <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                            <TextField
-                                label="Email"
-                                variant="standard"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </Box>
+                        <>
+                            <Box sx={{
+                                display: 'flex',
+                                alignItems: 'flex-end',
+                            }}>
+                                <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                <TextField
+                                    label="Email"
+                                    variant="standard"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </Box>
+
+                            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                <AssignmentIndIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                <TextField
+                                    select
+                                    label="Role"
+                                    variant="standard"
+                                    fullWidth
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                >
+                                    {roles.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Box>
+                        </>
                     }
 
                     <Box sx={{
