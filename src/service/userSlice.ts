@@ -48,7 +48,14 @@ export const loginUser = createAsyncThunk(
     "login/loginUser",
     async (user: UserModel) => {
         try {
-            const response = await api.post("auth/login", user, {withCredentials: true});
+            const payload = {
+                username: user.username,
+                email: user.email,
+                password: user.password,
+                role: user.role,
+            };
+
+            const response = await api.post("auth/signIn", payload, {withCredentials: true});
             return response.data;
         } catch (e) {
             throw e;
@@ -81,12 +88,17 @@ const userSlice = createSlice({
                     state.refreshToken = action.payload.refreshToken;
                     state.user = action.payload.user;
                     state.username = action.payload.username;
+                    state.isAuthenticated = true;
 
                     Cookies.set("jwtToken", action.payload.jwtToken, {
                         expires: 7, //valid for 7 days
                         sameSite: "lax"
                     });
-                    state.isAuthenticated = true;
+
+                    Cookies.set("refreshToken", action.payload.refreshTokenn , {
+                       expires: 7, //valid for 7 days
+                       sameSite: "lax"
+                    });
                 }
             })
             .addCase(loginUser.pending, (state) => {
