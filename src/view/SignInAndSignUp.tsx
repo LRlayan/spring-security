@@ -9,7 +9,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import Typography from "@mui/material/Typography";
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import { Button } from '@mui/material';
-import {registerUser} from "../service/userSlice.ts";
+import {loginUser, registerUser} from "../service/userSlice.ts";
 import {UserModel} from "../model/userModel.ts";
 import MenuItem from '@mui/material/MenuItem';
 
@@ -25,6 +25,9 @@ const SignInAndSignUp = () => {
 
     const handleSignIn = () => {
         setSignIn(true);
+        const user = new UserModel(username, email,  password, role)
+
+        dispatch(loginUser(user));
     }
 
     const handleSignUp = () => {
@@ -59,34 +62,36 @@ const SignInAndSignUp = () => {
                         Sign In
                     </Typography>
 
+                    {!isSignIn &&
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'flex-end',
+                        }}>
+                            <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                            <TextField
+                                label="Username"
+                                variant="standard"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </Box>
+                    }
+
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'flex-end',
                     }}>
-                        <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                        <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                         <TextField
-                            label="Username"
+                            label="Email"
                             variant="standard"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Box>
 
                     {!isSignIn &&
                         <>
-                            <Box sx={{
-                                display: 'flex',
-                                alignItems: 'flex-end',
-                            }}>
-                                <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                                <TextField
-                                    label="Email"
-                                    variant="standard"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </Box>
-
                             <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                 <AssignmentIndIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                                 <TextField
