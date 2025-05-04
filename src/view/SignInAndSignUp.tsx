@@ -12,6 +12,7 @@ import { Button } from '@mui/material';
 import {loginUser, registerUser} from "../service/userSlice.ts";
 import {UserModel} from "../model/userModel.ts";
 import MenuItem from '@mui/material/MenuItem';
+import {useNavigate} from "react-router";
 
 const SignInAndSignUp = () => {
     const [isSignIn, setSignIn] = useState<boolean>(true);
@@ -20,6 +21,7 @@ const SignInAndSignUp = () => {
     const [password, setPassword] = useState<string>("");
     const [role, setRole] = useState<string>("");
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     const roles = ['ADMIN', 'USER', 'MANAGER'];
 
@@ -28,6 +30,7 @@ const SignInAndSignUp = () => {
         const user = new UserModel(username, email,  password, role)
 
         dispatch(loginUser(user));
+        navigate("/home");
     }
 
     const handleSignUp = () => {
